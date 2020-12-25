@@ -4,7 +4,7 @@ from asyncio import sleep, gather
 from pyrogram.raw import functions
 from pyrogram import filters
 
-from nana import app, Command, DB_AVAILABLE, AdminSettings, edrep
+from nana import app, COMMAND_PREFIXES, DB_AVAILABLE, AdminSettings, edrep
 
 if DB_AVAILABLE:
     from nana.modules.database.cloner_db import backup_indentity, restore_identity
@@ -54,7 +54,7 @@ Creates message link to a message
 profile_photo = "nana/downloads/pfp.jpg"
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("setpfp", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("setpfp", COMMAND_PREFIXES))
 async def set_pfp(client, message):
     replied = message.reply_to_message
     if (
@@ -78,7 +78,7 @@ async def set_pfp(client, message):
         await message.delete()
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("vpfp", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("vpfp", COMMAND_PREFIXES))
 async def view_pfp(client, message):
     replied = message.reply_to_message
     if replied:
@@ -95,7 +95,7 @@ async def view_pfp(client, message):
         os.remove(profile_photo)
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("clone", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("clone", COMMAND_PREFIXES))
 async def clone(client, message):
     if message.reply_to_message:
         target = message.reply_to_message.from_user.id
@@ -140,7 +140,7 @@ async def clone(client, message):
     await message.delete()
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("revert", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("revert", COMMAND_PREFIXES))
 async def revert(client, message):
     first_name, last_name, bio = restore_identity()
     await client.send(
@@ -159,7 +159,7 @@ async def revert(client, message):
     )
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("join", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("join", COMMAND_PREFIXES))
 async def join_chat(client, message):
     cmd = message.command
     text = ""
@@ -180,13 +180,13 @@ async def join_chat(client, message):
     )
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("leave", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("leave", COMMAND_PREFIXES))
 async def leave_chat(client, message):
     await edrep(message, text="__adios__")
     await client.leave_chat(message.chat.id)
 
 
-@app.on_message(filters.command("unread", Command) & filters.user(AdminSettings))
+@app.on_message(filters.command("unread", COMMAND_PREFIXES) & filters.user(AdminSettings))
 async def mark_chat_unread(client, message):
     await gather(
         message.delete(),
@@ -198,7 +198,7 @@ async def mark_chat_unread(client, message):
     )
 
 
-@app.on_message(filters.command("s", Command) & filters.user(AdminSettings))
+@app.on_message(filters.command("s", COMMAND_PREFIXES) & filters.user(AdminSettings))
 async def to_saved(_, message):
     await message.delete()
     await message.reply_to_message.forward("self")

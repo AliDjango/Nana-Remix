@@ -7,7 +7,7 @@ import os
 import pycurl
 from pyrogram import filters
 
-from nana import app, Command, log, AdminSettings, edrep
+from nana import app, COMMAND_PREFIXES, log, AdminSettings, edrep
 from .downloads import download_file_from_tg, name_file, humanbytes
 
 __MODULE__ = "Keep.sh"
@@ -21,7 +21,7 @@ Reply to telegram file for mirroring to keep.sh
 """
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("keepsh", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("keepsh", COMMAND_PREFIXES))
 async def tfsh(client, message):
     if not message.reply_to_message:
         await edrep(message, text="`Reply to any file telegram message!`")

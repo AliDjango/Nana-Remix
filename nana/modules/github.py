@@ -10,7 +10,7 @@ from random import randint
 
 from pyrogram import filters
 
-from nana import app, Command, AdminSettings, edrep
+from nana import app, COMMAND_PREFIXES, AdminSettings, edrep
 from nana.utils.Pyroutils import ReplyCheck
 from nana.utils.aiohttp_helper import AioHttp
 
@@ -25,7 +25,7 @@ Finding information about a github user.
 """
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("git", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("git", COMMAND_PREFIXES))
 async def github(client, message):
     if len(message.text.split()) == 1:
         await edrep(message, text="Usage: `git (username)`")

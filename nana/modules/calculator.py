@@ -1,7 +1,7 @@
 from currency_converter import CurrencyConverter
 from pyrogram import filters
 
-from nana import app, Command, AdminSettings, edrep
+from nana import app, COMMAND_PREFIXES, AdminSettings, edrep
 
 __MODULE__ = "Calculator"
 __HELP__ = """
@@ -34,7 +34,7 @@ def convert_c(celsius):
     return cel
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("curr", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("curr", COMMAND_PREFIXES))
 async def evaluation_curr(_, message):
     if len(message.text.split()) <= 3:
         await edrep(message, text="Usage: `curr 100 USD IDR`")
@@ -50,7 +50,7 @@ async def evaluation_curr(_, message):
         await edrep(message, text=str(err))
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("temp", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("temp", COMMAND_PREFIXES))
 async def evaluation_temp(_, message):
     if len(message.text.split()) <= 2:
         await edrep(message, text="Usage: `temp 30 C` or `temp 60 F`")

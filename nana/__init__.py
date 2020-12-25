@@ -41,29 +41,29 @@ RANDOM_STICKERS = [
 ENV = get_var("ENV", False)
 logger = get_var("LOGGER", False)
 # Version
-lang_code = get_var("lang_code", "en")
-device_model = platform.machine()
-system_version = platform.platform()
+LANG_CODE = get_var("lang_code", "en")
+DEVICE_MODEL = platform.machine()
+SYSTEM_VERSION = platform.platform()
 time_country = get_var("time_country", None)
 
 # Must be filled
-api_id = int(get_var("api_id", None))
-api_hash = get_var("api_hash", None)
+API_ID = int(get_var("api_id", None))
+API_HASH = get_var("api_hash", None)
 
 # Session
 USERBOT_SESSION = get_var("USERBOT_SESSION", None)
 
 # From config
-Command = get_var("Command", "! . - ^").split()
+COMMAND_PREFIXES = get_var("Command", "! . - ^").split()
 NANA_WORKER = int(get_var("NANA_WORKER", 8))
 ASSISTANT_WORKER = int(get_var("ASSISTANT_WORKER", 2))
 # APIs
-thumbnail_API = get_var("thumbnail_API", None)
-screenshotlayer_API = get_var("screenshotlayer_API", None)
-gdrive_credentials = get_var("gdrive_credentials", None)
-lydia_api = get_var("lydia_api", None)
-remove_bg_api = get_var("remove_bg_api", None)
-sw_api = get_var("sw_api", None)
+THUMBNAIL_API = get_var("thumbnail_API", None)
+SCREENSHOTLAYER_API = get_var("screenshotlayer_API", None)
+GDRIVE_CREDENTIALS = get_var("gdrive_credentials", None)
+LYDIA_API = get_var("lydia_api", None)
+REMOVE_BG_API = get_var("remove_bg_api", None)
+SPAMWATCH_API = get_var("sw_api", None)
 IBM_WATSON_CRED_URL = get_var("IBM_WATSON_CRED_URL", None)
 IBM_WATSON_CRED_PASSWORD = get_var("IBM_WATSON_CRED_PASSWORD", None)
 # LOADER
@@ -166,20 +166,20 @@ SESSION = mulaisql()
 
 setbot = Client(
     ":memory:",
-    api_id=api_id,
-    api_hash=api_hash,
+    api_id=API_ID,
+    api_hash=API_HASH,
     bot_token=ASSISTANT_BOT_TOKEN,
     workers=ASSISTANT_WORKER,
 )
 
 app = Client(
     USERBOT_SESSION,
-    api_id=api_id,
-    api_hash=api_hash,
+    api_id=API_ID,
+    api_hash=API_HASH,
     app_version=app_version,
-    device_model=device_model,
-    system_version=system_version,
-    lang_code=lang_code,
+    device_model=DEVICE_MODEL,
+    system_version=SYSTEM_VERSION,
+    lang_code=LANG_CODE,
     workers=NANA_WORKER,
 )
 

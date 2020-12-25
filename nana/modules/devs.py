@@ -8,7 +8,7 @@ from io import StringIO
 
 from pyrogram import filters
 
-from nana import Command, app, edrep, AdminSettings
+from nana import COMMAND_PREFIXES, app, edrep, AdminSettings
 from nana.utils.deldog import deldog
 from nana.utils.parser import mention_markdown
 from nana.utils.aiohttp_helper import AioHttp
@@ -55,7 +55,7 @@ async def aexec(code, client, message):
     return await locals()["__aexec"](client, message)
 
 
-@app.on_message(filters.me & filters.command("reveal", Command))
+@app.on_message(filters.me & filters.command("reveal", COMMAND_PREFIXES))
 async def sd_reveal(client, message):
     cmd = message.command
     self_tag = " ".join(cmd[1:])
@@ -78,7 +78,7 @@ async def sd_reveal(client, message):
     filters.user(AdminSettings)
     & ~filters.forwarded
     & ~filters.via_bot
-    & filters.command("eval", Command)
+    & filters.command("eval", COMMAND_PREFIXES)
 )
 async def executor(client, message):
     try:
@@ -128,7 +128,7 @@ async def executor(client, message):
         await edrep(message, text=final_output)
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("ip", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("ip", COMMAND_PREFIXES))
 async def public_ip(_, message):
     j = await AioHttp().get_json("http://ip-api.com/json")
     stats = f"**ISP {j['isp']}:**\n"
@@ -146,7 +146,7 @@ async def public_ip(_, message):
     filters.user(AdminSettings)
     & ~filters.forwarded
     & ~filters.via_bot
-    & filters.command("sh", Command)
+    & filters.command("sh", COMMAND_PREFIXES)
 )
 async def terminal(client, message):
     if len(message.text.split()) == 1:
@@ -228,7 +228,7 @@ async def terminal(client, message):
         )
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command(["log"], Command))
+@app.on_message(filters.user(AdminSettings) & filters.command(["log"], COMMAND_PREFIXES))
 async def log(_, message):
     f = open("nana/logs/error.log", "r")
     data = await deldog(f.read())
@@ -239,7 +239,7 @@ async def log(_, message):
     )
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("dc", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("dc", COMMAND_PREFIXES))
 async def dc_id_check(_, message):
     user = message.from_user
     if message.reply_to_message:
@@ -283,7 +283,7 @@ async def dc_id_check(_, message):
     await edrep(message, text=text)
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("id", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("id", COMMAND_PREFIXES))
 async def get_id(_, message):
     file_id = None
     user_id = None

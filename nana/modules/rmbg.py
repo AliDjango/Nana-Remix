@@ -12,7 +12,7 @@ from asyncio import sleep
 
 from removebg import RemoveBg
 from pyrogram import filters
-from nana import app, Command, remove_bg_api, AdminSettings, edrep
+from nana import app, COMMAND_PREFIXES, REMOVE_BG_API, AdminSettings, edrep
 from nana.utils.Pyroutils import ReplyCheck
 
 DOWN_PATH = "nana/"
@@ -20,9 +20,9 @@ DOWN_PATH = "nana/"
 IMG_PATH = DOWN_PATH + "image.jpg"
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("rmbg", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("rmbg", COMMAND_PREFIXES))
 async def remove_bg(client, message):
-    if not remove_bg_api:
+    if not REMOVE_BG_API:
         await edrep(
             message,
             text="Get the API from [Remove.bg](https://www.remove.bg/b/background-removal-api)",
@@ -42,7 +42,7 @@ async def remove_bg(client, message):
             os.remove(IMG_PATH)
         await client.download_media(message=replied, file_name=IMG_PATH)
         try:
-            rmbg = RemoveBg(remove_bg_api, "rm_bg_error.log")
+            rmbg = RemoveBg(REMOVE_BG_API, "rm_bg_error.log")
             rmbg.remove_background_from_img_file(IMG_PATH)
             remove_img = IMG_PATH + "_no_bg.png"
             await client.send_document(

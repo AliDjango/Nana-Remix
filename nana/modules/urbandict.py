@@ -1,7 +1,7 @@
 from pyrogram import filters
 from asyncio import sleep
 
-from nana import app, Command, AdminSettings, edrep
+from nana import app, COMMAND_PREFIXES, AdminSettings, edrep
 from nana.utils.string import replace_text
 from nana.utils.aiohttp_helper import AioHttp
 
@@ -15,7 +15,7 @@ Search urban for dictionary
 """
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("ud", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("ud", COMMAND_PREFIXES))
 async def urban_dictionary(_, message):
     if len(message.text.split()) == 1:
         await edrep(message, text="Usage: `ud example`")

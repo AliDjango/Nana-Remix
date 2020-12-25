@@ -25,7 +25,7 @@ from youtube_dl.utils import (
     XAttrMetadataError,
 )
 
-from nana import app, setbot, Command, AdminSettings, edrep
+from nana import app, setbot, COMMAND_PREFIXES, AdminSettings, edrep
 from nana.utils.parser import escape_markdown
 from nana.modules.downloads import download_url, progressdl
 
@@ -43,7 +43,7 @@ Download youtube music, and then send to tg as music.
 """
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("ytdl", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("ytdl", COMMAND_PREFIXES))
 async def youtube_download(client, message):
     args = message.text.split(None, 1)
     if len(args) == 1:
@@ -125,7 +125,7 @@ async def youtube_download(client, message):
     await message.delete()
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("ytmusic", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("ytmusic", COMMAND_PREFIXES))
 async def youtube_music(client, message):
     args = message.text.split(None, 1)
     if len(args) == 1:
@@ -189,7 +189,6 @@ async def youtube_music(client, message):
     try:
         await message.reply_audio(
             f"{ytdl_data['id']}.mp3",
-            supports_streaming=True,
             duration=ytdl_data["duration"],
             caption=ytdl_data["title"],
             thumb=thumbnail,
@@ -200,7 +199,6 @@ async def youtube_music(client, message):
     except FileNotFoundError:
         await message.reply_audio(
             f"{ytdl_data['id']}.mp3",
-            supports_streaming=True,
             duration=ytdl_data["duration"],
             caption=ytdl_data["title"],
             progress=lambda d, t: client.loop.create_task(

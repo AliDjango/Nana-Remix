@@ -15,7 +15,7 @@ from pyDownload import Downloader
 from pyrogram import filters
 from pyrogram.types import Message
 
-from nana import app, Command, AdminSettings, edrep
+from nana import app, COMMAND_PREFIXES, AdminSettings, edrep
 
 __MODULE__ = "Downloads"
 __HELP__ = """
@@ -49,7 +49,7 @@ androidfilehost.com`
 """
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("ls", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("ls", COMMAND_PREFIXES))
 async def ls(_, message):
     args = message.text.split(None, 1)
     basepath = "nana/{}".format(args[1]) if len(args) == 2 else "nana/"
@@ -73,7 +73,7 @@ async def ls(_, message):
     )
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("upload", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("upload", COMMAND_PREFIXES))
 async def upload_file(client, message):
     args = message.text.split(None, 1)
     if len(args) == 1:
@@ -153,7 +153,7 @@ async def download_url(url, file_name):
     return downlaoded
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("dl", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("dl", COMMAND_PREFIXES))
 async def download_from_url(_, message):
     if len(message.text.split()) == 1:
         await edrep(message, text="Usage: `dl <url> <filename>`")
@@ -177,7 +177,7 @@ async def download_from_url(_, message):
     await edrep(message, text=download)
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("download", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("download", COMMAND_PREFIXES))
 async def dssownload_from_telegram(client, message):
     if message.reply_to_message:
         await download_file_from_tg(client, message)
@@ -185,7 +185,7 @@ async def dssownload_from_telegram(client, message):
         await edrep(message, text="Reply document to download it")
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("direct", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("direct", COMMAND_PREFIXES))
 async def direct_link_generator(_, message):
     args = message.text.split(None, 1)
     await edrep(message, text="`Processing...`")

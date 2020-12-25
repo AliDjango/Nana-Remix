@@ -3,7 +3,7 @@ from html import escape
 
 from pyrogram import filters
 
-from nana import app, Command, AdminSettings, edrep
+from nana import app, COMMAND_PREFIXES, AdminSettings, edrep
 
 __MODULE__ = "Stylish Text"
 __HELP__ = """
@@ -240,7 +240,7 @@ def stylish_formatting(text):
     return text
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("stylish", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("stylish", COMMAND_PREFIXES))
 async def stylish_generator(_, message):
     if (
         message.text

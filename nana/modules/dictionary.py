@@ -1,7 +1,7 @@
 import asyncio
 from pyrogram import filters
 
-from nana import app, Command, AdminSettings, edrep
+from nana import app, COMMAND_PREFIXES, AdminSettings, edrep
 from nana.utils.aiohttp_helper import AioHttp
 
 
@@ -14,7 +14,7 @@ Search dictionary for given words
 __MODULE__ = "Dictionary"
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("dic", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("dic", COMMAND_PREFIXES))
 async def dictionary(_, message):
     cmd = message.command
     input_ = ""

@@ -7,9 +7,9 @@ from coffeehouse.exception import CoffeeHouseError as CFError
 from pyrogram import filters
 
 from nana import (
-    lydia_api,
+    LYDIA_API,
     app,
-    Command,
+    COMMAND_PREFIXES,
     setbot,
     Owner,
     OwnerUsername,
@@ -32,11 +32,11 @@ Removes AI on chat
 Powered by CoffeeHouse API created by @Intellivoid.
 """
 
-CoffeeHouseAPI = API(lydia_api)
+CoffeeHouseAPI = API(LYDIA_API)
 api_ = LydiaAI(CoffeeHouseAPI)
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("addchat", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("addchat", COMMAND_PREFIXES))
 async def add_chat(_, message):
     global api_
     chat_id = message.chat.id
@@ -54,7 +54,7 @@ async def add_chat(_, message):
     await message.delete()
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("rmchat", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("rmchat", COMMAND_PREFIXES))
 async def remove_chat(_, message):
     chat_id = message.chat.id
     is_chat = sql.is_chat(chat_id)

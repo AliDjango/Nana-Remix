@@ -1,7 +1,7 @@
 from pyrogram import filters
 from asyncio import sleep
 
-from nana import app, Command, AdminSettings, edrep
+from nana import app, COMMAND_PREFIXES, AdminSettings, edrep
 from nana.utils.expand import expand_url
 
 __MODULE__ = "Link Expander"
@@ -14,7 +14,7 @@ Reply or parse arg of url to expand
 """
 
 
-@app.on_message(filters.command("expand", Command) & filters.user(AdminSettings))
+@app.on_message(filters.command("expand", COMMAND_PREFIXES) & filters.user(AdminSettings))
 async def expand(_, message):
     if message.reply_to_message:
         url = message.reply_to_message.text or message.reply_to_message.caption

@@ -10,9 +10,9 @@ from pyrogram import filters
 from nana import (
     app,
     setbot,
-    Command,
+    COMMAND_PREFIXES,
     gauth,
-    gdrive_credentials,
+    GDRIVE_CREDENTIALS,
     ENV,
     AdminSettings,
     edrep,
@@ -80,7 +80,7 @@ async def get_driveinfo(driveid):
     return cleanhtml(str(getdrivename.find("title"))).split(" - ")[0]
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("credentials", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("credentials", COMMAND_PREFIXES))
 async def credentials(_, message):
     args = message.text.split(None, 1)
     if len(args) == 1:
@@ -93,13 +93,13 @@ async def credentials(_, message):
         return
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("gdrive", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("gdrive", COMMAND_PREFIXES))
 async def gdrive_stuff(client, message):
     gauth.LoadCredentialsFile("nana/session/drive")
     if gauth.credentials is None:
-        if ENV and gdrive_credentials:
+        if ENV and GDRIVE_CREDENTIALS:
             with open("client_secrets.json", "w") as file:
-                file.write(gdrive_credentials)
+                file.write(GDRIVE_CREDENTIALS)
         await edrep(
             message,
             text="You are not logged in to your google drive account!\nYour assistant bot may help you to login google "

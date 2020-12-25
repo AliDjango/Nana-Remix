@@ -2,7 +2,7 @@ import asyncio
 
 from pyrogram import filters
 
-from nana import Command, app, AdminSettings, edrep
+from nana import COMMAND_PREFIXES, app, AdminSettings, edrep
 from nana.utils.aiohttp_helper import AioHttp
 
 __MODULE__ = "Covid"
@@ -15,7 +15,7 @@ Check info of cases corona virus disease 2019
 """
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("covid", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("covid", COMMAND_PREFIXES))
 async def corona(_, message):
     args = message.text.split(None, 1)
     if len(args) == 1:

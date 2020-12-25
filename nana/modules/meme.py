@@ -10,7 +10,7 @@ from pyrogram.raw import functions
 
 import nana.modules.meme_strings as meme_strings
 from nana.utils.Pyroutils import ReplyCheck
-from nana import app, Command, AdminSettings, edrep
+from nana import app, COMMAND_PREFIXES, AdminSettings, edrep
 
 __MODULE__ = "Memes"
 __HELP__ = """
@@ -73,7 +73,7 @@ async def mocking_text(text):
     return pesan
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("pat", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("pat", COMMAND_PREFIXES))
 async def pat(client, message):
     async with aiohttp.ClientSession() as session:
         URL = "https://some-random-api.ml/animu/pat"
@@ -88,7 +88,7 @@ async def pat(client, message):
             )
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("scam", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("scam", COMMAND_PREFIXES))
 async def scam(client, message):
     input_str = message.command
     if len(input_str) == 1:  # Let bot decide action and time
@@ -120,12 +120,12 @@ async def scam(client, message):
         return
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("shg", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("shg", COMMAND_PREFIXES))
 async def shg(_, message):
     await edrep(message, text=random.choice(meme_strings.shgs))
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("spam", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("spam", COMMAND_PREFIXES))
 async def spam(client, message):
     await message.delete()
     times = message.command[1]
@@ -143,7 +143,7 @@ async def spam(client, message):
             await asyncio.sleep(0.20)
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("spamstk", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("spamstk", COMMAND_PREFIXES))
 async def spam_stick(client, message):
     if not message.reply_to_message:
         await edrep(message, text="**reply to a sticker with amount you want to spam**")
@@ -170,7 +170,7 @@ async def spam_stick(client, message):
                 await asyncio.sleep(0.20)
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("owo", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("owo", COMMAND_PREFIXES))
 async def owo(_, message):
     cmd = message.command
     text = ""
@@ -200,7 +200,7 @@ async def owo(_, message):
     await edrep(message, text=reply_text)
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("str", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("str", COMMAND_PREFIXES))
 async def stretch(_, message):
     cmd = message.command
     stretch_text = ""
@@ -220,7 +220,7 @@ async def stretch(_, message):
     await edrep(message, text=reply_text)
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("cp", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("cp", COMMAND_PREFIXES))
 async def haha_emojis(_, message):
     if not message.reply_to_message.message_id:
         return
@@ -242,7 +242,7 @@ async def haha_emojis(_, message):
     await edrep(message, text=reply_text)
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("mocktxt", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("mocktxt", COMMAND_PREFIXES))
 async def mock_text(client, message):
     if message.reply_to_message:
         teks = message.reply_to_message.text
@@ -254,7 +254,7 @@ async def mock_text(client, message):
         await client.edit_message_text(message.chat.id, message.message_id, pesan)
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("fakess", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("fakess", COMMAND_PREFIXES))
 async def fake_ss(client, message):
     await asyncio.gather(
         message.delete(),
@@ -268,7 +268,7 @@ async def fake_ss(client, message):
     )
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("g", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("g", COMMAND_PREFIXES))
 async def glitch(client, message):
     cmd = message.command
     amount = ""

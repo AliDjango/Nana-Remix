@@ -4,7 +4,7 @@ from pyrogram import filters
 
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-from nana import app, setbot, Owner, OwnerName, Command, DB_AVAILABLE, edrep
+from nana import app, setbot, Owner, OwnerName, COMMAND_PREFIXES, DB_AVAILABLE, edrep
 from nana.utils.msg_types import Types, get_message_type
 from nana.utils.parser import mention_markdown, escape_markdown
 
@@ -34,7 +34,7 @@ AFK_RESTIRECT = {}
 DELAY_TIME = 60  # seconds
 
 
-@app.on_message(filters.me & (filters.command("afk", Command)))
+@app.on_message(filters.me & (filters.command("afk", COMMAND_PREFIXES)))
 async def afk(_, message):
     if not DB_AVAILABLE:
         await message.edit("Your database is not avaiable!")

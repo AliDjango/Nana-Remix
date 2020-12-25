@@ -6,7 +6,7 @@ import timeago
 from pyrogram import filters
 from pyrogram.utils import get_channel_id
 
-from nana import Command, app, AdminSettings, edrep
+from nana import COMMAND_PREFIXES, app, AdminSettings, edrep
 
 __MODULE__ = "Metrics"
 __HELP__ = """
@@ -63,7 +63,7 @@ async def get_inactive(client, message):
 
 
 @app.on_message(
-    filters.user(AdminSettings) & filters.command(["wordcount", "wc"], Command)
+    filters.user(AdminSettings) & filters.command(["wordcount", "wc"], COMMAND_PREFIXES)
 )
 async def word_count(client, message):
     await message.delete()
@@ -86,7 +86,7 @@ async def word_count(client, message):
     await progress.edit_text(out)
 
 
-@app.on_message(filters.me & filters.command("msg", Command))
+@app.on_message(filters.me & filters.command("msg", COMMAND_PREFIXES))
 async def inactive_msg(client, message):
     text = await get_inactive(client, message)
     await edrep(message, text=text)

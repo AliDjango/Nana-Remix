@@ -1,6 +1,6 @@
 from asyncio import sleep
 from pyrogram import filters
-from nana import app, Command, AdminSettings, edrep
+from nana import app, COMMAND_PREFIXES, AdminSettings, edrep
 
 __MODULE__ = "Quotly"
 __HELP__ = """
@@ -13,7 +13,7 @@ __Reply To Message Text To Create Quote Sticker.__
 """
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("q", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("q", COMMAND_PREFIXES))
 async def q_maker(_, message):
     if not message.reply_to_message:
         await edrep(message, text="**Reply to any users text message**")

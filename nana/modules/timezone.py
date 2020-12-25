@@ -2,7 +2,7 @@ from datetime import datetime
 from pytz import timezone
 from pyrogram import filters
 
-from nana import app, Command, time_country, AdminSettings, edrep
+from nana import app, COMMAND_PREFIXES, time_country, AdminSettings, edrep
 
 __MODULE__ = "Time"
 __HELP__ = """
@@ -16,7 +16,7 @@ Returns the Date and Time for a selected country
 """
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("time", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("time", COMMAND_PREFIXES))
 async def grabTime(_, message):
     if not time_country:
         await message.delete()

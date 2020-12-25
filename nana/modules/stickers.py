@@ -4,7 +4,7 @@ import time
 
 from PIL import Image
 
-from nana import app, setbot, Command, DB_AVAILABLE, AdminSettings, edrep
+from nana import app, setbot, COMMAND_PREFIXES, DB_AVAILABLE, AdminSettings, edrep
 
 if DB_AVAILABLE:
     from nana.assistant.database.stickers_db import get_sticker_set, get_stanim_set
@@ -28,7 +28,7 @@ type that command and select another or create new from @Stickers!
 """
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("kang", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("kang", COMMAND_PREFIXES))
 async def kang_stickers(client, message):
     if not DB_AVAILABLE:
         await edrep(message, text="Your database is not avaiable!")

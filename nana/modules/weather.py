@@ -4,7 +4,7 @@ from html import escape
 
 from pyrogram import filters
 
-from nana import app, Command, AdminSettings, edrep, Owner
+from nana import app, COMMAND_PREFIXES, AdminSettings, edrep, Owner
 from nana.modules.database.lang_db import prev_locale
 
 
@@ -19,7 +19,7 @@ Powered by `wttr.in`
 """
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("wttr", prefixes=Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("wttr", prefixes=COMMAND_PREFIXES))
 async def weather(_, message):
     if len(message.command) == 1:
         await edrep(message, text="Usage: `wttr Maldives`")

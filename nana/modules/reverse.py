@@ -11,7 +11,7 @@ import asyncio
 
 from pyrogram import filters
 
-from nana import app, Command, logging, AdminSettings, edrep
+from nana import app, COMMAND_PREFIXES, logging, AdminSettings, edrep
 from nana.utils.Pyroutils import ReplyCheck
 
 __MODULE__ = "Reverse"
@@ -61,7 +61,7 @@ async def take_screen_shot(
     return thumb_image_path if os.path.exists(thumb_image_path) else None
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("reverse", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("reverse", COMMAND_PREFIXES))
 async def google_rs(client, message):
     start = datetime.now()
     dis_loc = ""
@@ -117,7 +117,7 @@ async def google_rs(client, message):
     await edrep(message, text=out_str, parse_mode="HTML", disable_web_page_preview=True)
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("areverse", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("areverse", COMMAND_PREFIXES))
 async def tracemoe_rs(client, message):
     dis_loc = ""
     if message.reply_to_message:

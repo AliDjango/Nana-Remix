@@ -3,7 +3,7 @@ import random
 
 from pyrogram import filters
 
-from nana import app, Command, AdminSettings, edrep
+from nana import app, COMMAND_PREFIXES, AdminSettings, edrep
 from nana.utils.Pyroutils import ReplyCheck
 
 
@@ -33,7 +33,7 @@ waifus = [20, 32, 33, 40, 41, 42, 58]
 senpais = [37, 38, 48, 55]
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("ggl", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("ggl", COMMAND_PREFIXES))
 async def google_search(client, message):
     cmd = message.command
     googles = ""
@@ -57,7 +57,7 @@ async def google_search(client, message):
     )
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("mock", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("mock", COMMAND_PREFIXES))
 async def mock_spongebob(client, message):
     cmd = message.command
     mock = ""
@@ -81,7 +81,7 @@ async def mock_spongebob(client, message):
     )
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("senpai", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("senpai", COMMAND_PREFIXES))
 async def senpai_sticker(client, message):
     cmd = message.command
     senpai = ""
@@ -107,7 +107,7 @@ async def senpai_sticker(client, message):
     )
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("waifu", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("waifu", COMMAND_PREFIXES))
 async def waifu_sticker(client, message):
     cmd = message.command
     waifu = ""

@@ -4,7 +4,7 @@ import asyncio
 from pyrogram import filters
 
 from nana.utils.admincheck import admin_check
-from nana import Owner, app, Command, AdminSettings, edrep
+from nana import Owner, app, COMMAND_PREFIXES, AdminSettings, edrep
 
 __MODULE__ = "Purges"
 __HELP__ = """
@@ -33,7 +33,7 @@ Delete's a message that you reply to
 """
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("purge", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("purge", COMMAND_PREFIXES))
 async def purge_message(client, message):
     if message.chat.type not in ("supergroup", "channel"):
         return
@@ -71,7 +71,7 @@ async def purge_message(client, message):
     await ms_g.delete()
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("purgeme", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("purgeme", COMMAND_PREFIXES))
 async def purge_myself(client, message):
     if len(message.text.split()) >= 2 and message.text.split()[1].isdigit():
         target = int(message.text.split()[1])
@@ -110,7 +110,7 @@ async def purge_myself(client, message):
         await client.delete_messages(message.chat.id, message_ids=listall)
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("del", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("del", COMMAND_PREFIXES))
 async def delete_replied(client, message):
     msg_ids = [message.message_id]
     if message.reply_to_message:

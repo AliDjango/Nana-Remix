@@ -8,7 +8,7 @@ from pyrogram import filters
 
 from nana import (
     app,
-    Command,
+    COMMAND_PREFIXES,
     IBM_WATSON_CRED_URL,
     IBM_WATSON_CRED_PASSWORD,
     AdminSettings,
@@ -52,7 +52,7 @@ Reply to a voice message to output trascript
 lang = "en"  # Default Language for voice
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("tts", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("tts", COMMAND_PREFIXES))
 async def voice(client, message):
     global lang
     cmd = message.command
@@ -85,7 +85,7 @@ async def voice(client, message):
     os.remove("nana/cache/voice.mp3")
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("voicelang", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("voicelang", COMMAND_PREFIXES))
 async def voicelang(_, message):
     global lang
     temp = lang
@@ -100,7 +100,7 @@ async def voicelang(_, message):
     await edrep(message, text="Language Set to {}".format(lang))
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("stt", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("stt", COMMAND_PREFIXES))
 async def speach_to_text(client, message):
     start = datetime.now()
     input_str = message.reply_to_message.voice

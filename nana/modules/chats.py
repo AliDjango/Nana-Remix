@@ -2,7 +2,7 @@ import os
 
 from pyrogram import filters
 
-from nana import app, Command, DB_AVAILABLE, AdminSettings, edrep
+from nana import app, COMMAND_PREFIXES, DB_AVAILABLE, AdminSettings, edrep
 
 if DB_AVAILABLE:
     from nana.modules.database.chats_db import update_chat, get_all_chats
@@ -35,7 +35,7 @@ async def updatemychats(_, message):
     MESSAGE_RECOUNTER += 1
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("chatlist", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("chatlist", COMMAND_PREFIXES))
 async def get_chat(client, message):
     if not DB_AVAILABLE:
         await edrep(message, text="Your database is not avaiable!")

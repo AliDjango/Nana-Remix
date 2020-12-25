@@ -6,7 +6,7 @@ from git import Repo
 from git.exc import InvalidGitRepositoryError, GitCommandError, NoSuchPathError
 from pyrogram import filters
 
-from nana import app, Command, AdminSettings, OFFICIAL_BRANCH, REPOSITORY, edrep
+from nana import app, COMMAND_PREFIXES, AdminSettings, OFFICIAL_BRANCH, REPOSITORY, edrep
 from nana.__main__ import restart_all, except_hook
 from nana.assistant.updater import update_changelog
 
@@ -52,7 +52,7 @@ async def initial_git(repo):
     os.rename("nana-old/nana/session/", "nana/session/")
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("update", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("update", COMMAND_PREFIXES))
 async def updater(client, message):
     initial = False
     try:

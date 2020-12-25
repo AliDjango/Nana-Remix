@@ -1,7 +1,7 @@
 from gpytranslate import Translator
 from pyrogram import filters
 
-from nana import app, Command, AdminSettings, edrep
+from nana import app, COMMAND_PREFIXES, AdminSettings, edrep
 
 trl = Translator()
 
@@ -19,7 +19,7 @@ Reply a message to translate that.
 """
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("tr", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("tr", COMMAND_PREFIXES))
 async def translate(_, message):
     trl = Translator()
     if message.reply_to_message and (

@@ -1,7 +1,7 @@
 import os
 import requests
 from pyrogram import filters
-from nana import app, Command, AdminSettings, edrep
+from nana import app, COMMAND_PREFIXES, AdminSettings, edrep
 
 
 __MODULE__ = "OCR"
@@ -35,7 +35,7 @@ async def ocr_space_file(
     return r.json()
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("ocr", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("ocr", COMMAND_PREFIXES))
 async def ocr(client, message):
     cmd = message.command
     lang_code = ""

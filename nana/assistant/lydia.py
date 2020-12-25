@@ -8,11 +8,11 @@ from coffeehouse.lydia import LydiaAI
 from coffeehouse.exception import CoffeeHouseError as CFError
 from pyrogram import filters
 
-from nana import setbot, AdminSettings, lydia_api, Owner, BotUsername, BotID
+from nana import setbot, AdminSettings, LYDIA_API, Owner, BotUsername, BotID
 import nana.modules.meme_strings as meme_strings
 from nana.assistant.database import lydia_db as sql
 
-CoffeeHouseAPI = API(lydia_api)
+CoffeeHouseAPI = API(LYDIA_API)
 api_ = LydiaAI(CoffeeHouseAPI)
 
 

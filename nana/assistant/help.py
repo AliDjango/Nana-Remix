@@ -9,7 +9,7 @@ from pyrogram.raw import functions
 from nana import (
     setbot,
     AdminSettings,
-    Command,
+    COMMAND_PREFIXES,
     DB_AVAILABLE,
     NANA_IMG,
     BotUsername,
@@ -67,7 +67,7 @@ async def help_command(client, message):
         )
         return
     await help_parser(
-        client, message.chat.id, tld("help_str").format(", ".join(Command))
+        client, message.chat.id, tld("help_str").format(", ".join(COMMAND_PREFIXES))
     )
 
 
@@ -101,7 +101,7 @@ async def help_button(_, query):
 
     elif back_match:
         await query.message.edit(
-            text=tld("help_str").format(", ".join(Command)),
+            text=tld("help_str").format(", ".join(COMMAND_PREFIXES)),
             reply_markup=InlineKeyboardMarkup(
                 paginate_modules(0, HELP_COMMANDS, "help")
             ),

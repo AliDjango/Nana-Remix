@@ -4,7 +4,7 @@ import shutil
 import requests
 from pyrogram import filters
 
-from nana import app, Command, AdminSettings, edrep
+from nana import app, COMMAND_PREFIXES, AdminSettings, edrep
 
 __MODULE__ = "Uploader"
 __HELP__ = """
@@ -20,7 +20,7 @@ Upload image and convert to sticker, please note image from telegraph will resul
 """
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("pic", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("pic", COMMAND_PREFIXES))
 async def PictureUploader(client, message):
     if len(message.text.split()) == 1:
         await edrep(message, text="Usage: `.pic <url>`")
@@ -52,7 +52,7 @@ async def PictureUploader(client, message):
             await client.send_photo(message.chat.id, photo, "")
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("stk", Command))
+@app.on_message(filters.user(AdminSettings) & filters.command("stk", COMMAND_PREFIXES))
 async def StickerUploader(client, message):
     if len(message.text.split()) == 1:
         await edrep(message, text="Usage: `.stk <url>`")
