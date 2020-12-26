@@ -18,7 +18,7 @@ language_button_create = filters.create(language_button_callback)
 
 
 @setbot.on_callback_query(language_button_create)
-async def locale_button(client, query):
+async def locale_button(_, query):
     lang_match = re.findall(r"en-US|hi|he|id|fa|el|dv|es|ja|de|ta|pt-br|ar", query.data)
     if lang_match:
         if lang_match[0]:

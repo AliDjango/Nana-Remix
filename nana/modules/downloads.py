@@ -13,7 +13,6 @@ import requests
 from bs4 import BeautifulSoup
 from pyDownload import Downloader
 from pyrogram import filters
-from pyrogram.types import Message
 
 from nana import app, COMMAND_PREFIXES, AdminSettings, edit_or_reply
 

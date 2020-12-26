@@ -1,6 +1,4 @@
 import os
-import shutil
-
 from pyrogram import filters
 
 from nana import (

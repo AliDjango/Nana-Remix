@@ -1,9 +1,8 @@
 from git import Repo
 from git.exc import GitCommandError
-from nana import setbot, app, AdminSettings, NANA_IMG
+from nana import setbot, NANA_IMG
 from nana.__main__ import restart_all
 from nana.assistant.__main__ import dynamic_data_filter
-import os
 import re
 from asyncio import create_subprocess_exec, sleep
 
@@ -14,7 +13,7 @@ repo = Repo()
 
 
 @setbot.on_callback_query(dynamic_data_filter("change_branches"))
-async def chng_branch(client, query):
+async def chng_branch(_, query):
     buttons = [
         [InlineKeyboardButton(r, callback_data=f"chng_branch_{r}")]
         for r in repo.branches

@@ -32,14 +32,9 @@ async def weather(_, message):
         location = message.command[1]
         headers = {"user-agent": "httpie"}
         url = f"https://wttr.in/{location}?mnTC0&lang={prev_locale(Owner).locale_name}"
-        try:
-            async with aiohttp.ClientSession(headers=headers) as session:
-                async with session.get(url) as resp:
-                    data = await resp.text()
-        except Exception as e:
-            print(e)
-            await edit_or_reply(message, text="Failed to get the weather forecast")
-
+        async with aiohttp.ClientSession(headers=headers) as session:
+            async with session.get(url) as resp:
+                data = await resp.text()
         if "we processed more than 1M requests today" in data:
             await edit_or_reply(
                 message, text="`Sorry, we cannot process this request today!`"

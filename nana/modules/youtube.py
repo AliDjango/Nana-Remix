@@ -1,16 +1,7 @@
-import logging
 import os
-import re
-import shutil
-import subprocess
-import sys
-import traceback
 import time
 
-import pafy
-import requests
 from pyrogram import filters
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from pathlib import Path
 
 from youtube_dl import YoutubeDL
@@ -25,9 +16,8 @@ from youtube_dl.utils import (
     XAttrMetadataError,
 )
 
-from nana import app, setbot, COMMAND_PREFIXES, AdminSettings, edit_or_reply
-from nana.utils.parser import escape_markdown
-from nana.modules.downloads import download_url, progressdl
+from nana import app, COMMAND_PREFIXES, AdminSettings, edit_or_reply
+from nana.modules.downloads import progressdl
 
 __MODULE__ = "YouTube"
 __HELP__ = """
@@ -98,9 +88,6 @@ async def youtube_download(client, message):
         await edit_or_reply(
             message, text="`There was an error during info extraction.`"
         )
-        return
-    except Exception as e:
-        await edit_or_reply(message, text=f"{str(type(e)): {str(e)}}")
         return
     thumbnail = Path(f"{ytdl_data['id']}.jpg")
     c_time = time.time()
@@ -194,9 +181,6 @@ async def youtube_music(client, message):
         await edit_or_reply(
             message, text="`There was an error during info extraction.`"
         )
-        return
-    except Exception as e:
-        await edit_or_reply(message, text=f"{str(type(e)): {str(e)}}")
         return
     thumbnail = Path(f"{ytdl_data['id']}.jpg")
     c_time = time.time()

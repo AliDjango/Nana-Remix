@@ -208,11 +208,9 @@ async def gdrive_stuff(client, message):
         upload.InsertPermission({"type": "anyone", "value": "anyone", "role": "reader"})
         await edit_or_reply(
             message,
-            text="Uploaded!\nDownload link: [{}]({})\nDirect download link: [{}]({})".format(
+            text="Uploaded!\nDownload link: [{}]({})".format(
                 filerealname,
                 upload["alternateLink"],
-                filerealname,
-                upload["downloadUrl"],
             ),
         )
     elif len(message.text.split()) == 3 and message.text.split()[1] == "mirror":
@@ -248,8 +246,8 @@ async def gdrive_stuff(client, message):
         ).execute()
         await edit_or_reply(
             message,
-            text="Done!\nDownload link: [{}]({})\nDirect download link: [{}]({})".format(
-                filename, mirror["alternateLink"], filename, mirror["downloadUrl"]
+            text="Done!\nDownload link: [{}]({})".format(
+                filename, mirror["alternateLink"]
             ),
         )
     elif len(message.text.split()) == 2 and message.text.split()[1] == "tgmirror":
@@ -364,8 +362,8 @@ async def gdrive_stuff(client, message):
             )
             await edit_or_reply(
                 message,
-                text="Done!\nDownload link: [{}]({})\nDirect download link: [{}]({})".format(
-                    nama, upload["alternateLink"], nama, upload["downloadUrl"]
+                text="Done!\nDownload link: [{}]({})".format(
+                    nama, upload["alternateLink"]
                 ),
             )
             os.remove("nana/downloads/" + nama)
@@ -390,8 +388,8 @@ async def gdrive_stuff(client, message):
         upload.InsertPermission({"type": "anyone", "value": "anyone", "role": "reader"})
         await edit_or_reply(
             message,
-            text="Done!\nDownload link: [{}]({})\nDirect download link: [{}]({})".format(
-                nama, upload["alternateLink"], nama, upload["downloadUrl"]
+            text="Done!\nDownload link: [{}]({})".format(
+                nama, upload["alternateLink"]
             ),
         )
         os.remove("nana/downloads/" + nama)
