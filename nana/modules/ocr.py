@@ -1,7 +1,7 @@
 import os
 import requests
 from pyrogram import filters
-from nana import app, COMMAND_PREFIXES, AdminSettings, edrep
+from nana import app, COMMAND_PREFIXES, AdminSettings, edit_or_reply
 
 
 __MODULE__ = "OCR"
@@ -68,11 +68,11 @@ async def ocr(client, message):
     try:
         ParsedText = test_file["ParsedResults"][0]["ParsedText"]
     except BaseException as e:
-        await edrep(message, text=e)
+        await edit_or_reply(message, text=e)
     else:
         if ParsedText == "ParsedResults":
             await message.delete()
             return
         else:
-            await edrep(message, text=f"`{ParsedText}`")
+            await edit_or_reply(message, text=f"`{ParsedText}`")
     os.remove(downloaded_file_name)

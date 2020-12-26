@@ -15,7 +15,7 @@ from pyDownload import Downloader
 from pyrogram import filters
 from pyrogram.types import Message
 
-from nana import app, COMMAND_PREFIXES, AdminSettings, edrep
+from nana import app, COMMAND_PREFIXES, AdminSettings, edit_or_reply
 
 __MODULE__ = "Downloads"
 __HELP__ = """
@@ -65,7 +65,7 @@ async def ls(_, message):
         if os.path.isfile(os.path.join(basepath, entry))
     )
 
-    await edrep(
+    await edit_or_reply(
         message,
         text="**List directory :**`{}`\n**List file :**`{}`".format(
             directory, listfile
@@ -73,11 +73,13 @@ async def ls(_, message):
     )
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("upload", COMMAND_PREFIXES))
+@app.on_message(
+    filters.user(AdminSettings) & filters.command("upload", COMMAND_PREFIXES)
+)
 async def upload_file(client, message):
     args = message.text.split(None, 1)
     if len(args) == 1:
-        await edrep(message, text="usage : upload (path)")
+        await edit_or_reply(message, text="usage : upload (path)")
         return
     c_time = time.time()
     path = "nana/{}".format(args[1])
@@ -93,9 +95,9 @@ async def upload_file(client, message):
     except Exception as e:
         logging.error("Exception occured", exc_info=True)
         logging.error(e)
-        await edrep(message, text="`File not found!`")
+        await edit_or_reply(message, text="`File not found!`")
         return
-    await edrep(message, text="`Success!`")
+    await edit_or_reply(message, text="`Success!`")
     await asyncio.sleep(5)
     await client.delete_messages(message.chat.id, message.message_id)
 
@@ -156,7 +158,7 @@ async def download_url(url, file_name):
 @app.on_message(filters.user(AdminSettings) & filters.command("dl", COMMAND_PREFIXES))
 async def download_from_url(_, message):
     if len(message.text.split()) == 1:
-        await edrep(message, text="Usage: `dl <url> <filename>`")
+        await edit_or_reply(message, text="Usage: `dl <url> <filename>`")
         return
     if len(message.text.split()) == 2:
         url = message.text.split(None, 1)[1]
@@ -165,39 +167,43 @@ async def download_from_url(_, message):
         url = message.text.split(None, 2)[1]
         file_name = message.text.split(None, 2)[2]
     else:
-        await edrep(message, text="Invaild args given!")
+        await edit_or_reply(message, text="Invaild args given!")
         return
     try:
         os.listdir("nana/downloads/")
     except FileNotFoundError:
-        await edrep(message, text="Invalid download path in config!")
+        await edit_or_reply(message, text="Invalid download path in config!")
         return
-    await edrep(message, text="Downloading...")
+    await edit_or_reply(message, text="Downloading...")
     download = await download_url(url, file_name)
-    await edrep(message, text=download)
+    await edit_or_reply(message, text=download)
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("download", COMMAND_PREFIXES))
+@app.on_message(
+    filters.user(AdminSettings) & filters.command("download", COMMAND_PREFIXES)
+)
 async def dssownload_from_telegram(client, message):
     if message.reply_to_message:
         await download_file_from_tg(client, message)
     else:
-        await edrep(message, text="Reply document to download it")
+        await edit_or_reply(message, text="Reply document to download it")
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("direct", COMMAND_PREFIXES))
+@app.on_message(
+    filters.user(AdminSettings) & filters.command("direct", COMMAND_PREFIXES)
+)
 async def direct_link_generator(_, message):
     args = message.text.split(None, 1)
-    await edrep(message, text="`Processing...`")
+    await edit_or_reply(message, text="`Processing...`")
     if len(args) == 1:
-        await edrep(message, text="Write any args here!")
+        await edit_or_reply(message, text="Write any args here!")
         return
     downloadurl = args[1]
     reply = ""
     links = re.findall(r"\bhttps?://.*\.\S+", downloadurl)
     if not links:
         reply = "`No links found!`"
-        await edrep(message, text=reply)
+        await edit_or_reply(message, text=reply)
     for link in links:
         if "drive.google.com" in link:
             reply += gdrive(link)
@@ -217,7 +223,7 @@ async def direct_link_generator(_, message):
             reply += androidfilehost(link)
         else:
             reply += re.findall(r"\bhttps?://(.*?[^/]+)", link)[0] + "is not supported"
-    await edrep(message, text=reply)
+    await edit_or_reply(message, text=reply)
 
 
 def gdrive(url: str) -> str:
@@ -601,12 +607,12 @@ async def download_file_from_tg(client, message):
             ),
         )
     else:
-        await edrep(message, text="Unknown file!")
+        await edit_or_reply(message, text="Unknown file!")
         return
     end = int(time.time())
     times = await time_parser(c_time, end)
     text = f"**⬇ Downloaded!**\n🗂 File name: `{name}`\n🏷 Saved to: `nana/downloads/`\n⏲ Downloaded in: {times}"
-    await edrep(message, text=text)
+    await edit_or_reply(message, text=text)
 
 
 async def name_file(_, message):
@@ -636,5 +642,5 @@ async def name_file(_, message):
     elif message.reply_to_message.document:
         return "{}".format(message.reply_to_message.document.file_name)
     else:
-        await edrep(message, text="Unknown file!")
+        await edit_or_reply(message, text="Unknown file!")
         return

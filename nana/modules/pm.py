@@ -65,7 +65,9 @@ async def pm_block(client, message):
         )
 
 
-@app.on_message(filters.me & filters.command("approve", COMMAND_PREFIXES) & filters.private)
+@app.on_message(
+    filters.me & filters.command("approve", COMMAND_PREFIXES) & filters.private
+)
 async def approve_pm(_, message):
     if message.chat.type == "private":
         set_whitelist(message.chat.id, True)
@@ -81,7 +83,9 @@ async def approve_pm(_, message):
 
 
 @app.on_message(
-    filters.me & filters.command(["revoke", "disapprove"], COMMAND_PREFIXES) & filters.private
+    filters.me
+    & filters.command(["revoke", "disapprove"], COMMAND_PREFIXES)
+    & filters.private
 )
 async def revoke_pm_block(_, message):
     if message.chat.type == "private":

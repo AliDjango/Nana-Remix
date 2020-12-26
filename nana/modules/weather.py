@@ -4,7 +4,7 @@ from html import escape
 
 from pyrogram import filters
 
-from nana import app, COMMAND_PREFIXES, AdminSettings, edrep, Owner
+from nana import app, COMMAND_PREFIXES, AdminSettings, edit_or_reply, Owner
 from nana.modules.database.lang_db import prev_locale
 
 
@@ -19,10 +19,12 @@ Powered by `wttr.in`
 """
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("wttr", prefixes=COMMAND_PREFIXES))
+@app.on_message(
+    filters.user(AdminSettings) & filters.command("wttr", prefixes=COMMAND_PREFIXES)
+)
 async def weather(_, message):
     if len(message.command) == 1:
-        await edrep(message, text="Usage: `wttr Maldives`")
+        await edit_or_reply(message, text="Usage: `wttr Maldives`")
         await asyncio.sleep(3)
         await message.delete()
 
@@ -36,10 +38,12 @@ async def weather(_, message):
                     data = await resp.text()
         except Exception as e:
             print(e)
-            await edrep(message, text="Failed to get the weather forecast")
+            await edit_or_reply(message, text="Failed to get the weather forecast")
 
         if "we processed more than 1M requests today" in data:
-            await edrep(message, text="`Sorry, we cannot process this request today!`")
+            await edit_or_reply(
+                message, text="`Sorry, we cannot process this request today!`"
+            )
         else:
             weather_data = f"<code>{escape(data.replace('report', 'Report'))}</code>"
-            await edrep(message, text=weather_data, parse_mode="html")
+            await edit_or_reply(message, text=weather_data, parse_mode="html")

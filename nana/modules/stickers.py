@@ -4,7 +4,14 @@ import time
 
 from PIL import Image
 
-from nana import app, setbot, COMMAND_PREFIXES, DB_AVAILABLE, AdminSettings, edrep
+from nana import (
+    app,
+    setbot,
+    COMMAND_PREFIXES,
+    DB_AVAILABLE,
+    AdminSettings,
+    edit_or_reply,
+)
 
 if DB_AVAILABLE:
     from nana.assistant.database.stickers_db import get_sticker_set, get_stanim_set
@@ -31,12 +38,12 @@ type that command and select another or create new from @Stickers!
 @app.on_message(filters.user(AdminSettings) & filters.command("kang", COMMAND_PREFIXES))
 async def kang_stickers(client, message):
     if not DB_AVAILABLE:
-        await edrep(message, text="Your database is not avaiable!")
+        await edit_or_reply(message, text="Your database is not avaiable!")
         return
     sticker_pack = get_sticker_set(message.from_user.id)
     animation_pack = get_stanim_set(message.from_user.id)
     if not sticker_pack:
-        await edrep(
+        await edit_or_reply(
             message,
             text="You're not setup sticker pack!\nCheck your assistant for more information!",
         )
@@ -50,7 +57,7 @@ async def kang_stickers(client, message):
     if message.reply_to_message and message.reply_to_message.sticker:
         if message.reply_to_message.sticker.mime_type == "application/x-tgsticker":
             if not animation_pack:
-                await edrep(
+                await edit_or_reply(
                     message,
                     text="You're not setup animation sticker pack!\nCheck your assistant for more information!",
                 )
@@ -81,7 +88,7 @@ async def kang_stickers(client, message):
             message.reply_to_message.document, file_name="nana/cache/sticker.png"
         )
     else:
-        await edrep(
+        await edit_or_reply(
             message,
             text="Reply a sticker or photo to kang it!\nCurrent sticker pack is: {}\nCurrent animation pack is: {}".format(
                 sticker_pack, animation_pack.sticker
@@ -131,7 +138,7 @@ async def kang_stickers(client, message):
         == "Whoa! That's probably enough stickers for one pack, give it a break. A pack can't have more than "
         "120 stickers at the moment."
     ):
-        await edrep(
+        await edit_or_reply(
             message,
             text="Your sticker pack was full!\nPlease change one from your Assistant",
         )
@@ -159,13 +166,13 @@ async def kang_stickers(client, message):
         message.reply_to_message.sticker
         and message.reply_to_message.sticker.mime_type == "application/x-tgsticker"
     ):
-        await edrep(
+        await edit_or_reply(
             message,
             text="**Animation Sticker added!**\nYour animated sticker has been saved on [This sticker animated pack]("
             "https://t.me/addstickers/{})".format(animation_pack.sticker),
         )
     else:
-        await edrep(
+        await edit_or_reply(
             message,
             text="**Sticker added!**\nYour sticker has been saved on [This sticker pack](https://t.me/addstickers/{})".format(
                 sticker_pack

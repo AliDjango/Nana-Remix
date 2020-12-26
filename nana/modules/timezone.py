@@ -2,7 +2,7 @@ from datetime import datetime
 from pytz import timezone
 from pyrogram import filters
 
-from nana import app, COMMAND_PREFIXES, time_country, AdminSettings, edrep
+from nana import app, COMMAND_PREFIXES, time_country, AdminSettings, edit_or_reply
 
 __MODULE__ = "Time"
 __HELP__ = """
@@ -34,4 +34,4 @@ async def grabTime(_, message):
         + "__in__ "
         + f"**{tz}**"
     )
-    await edrep(message, text=time_string)
+    await edit_or_reply(message, text=time_string)

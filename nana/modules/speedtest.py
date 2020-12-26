@@ -63,7 +63,9 @@ async def speedtestxyz_callback(client, query):
         )
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("speedtest", COMMAND_PREFIXES))
+@app.on_message(
+    filters.user(AdminSettings) & filters.command("speedtest", COMMAND_PREFIXES)
+)
 async def speed_test_inline(client, message):
     x = await client.get_inline_bot_results(f"{BotUsername}", "speedtest")
     await message.delete()

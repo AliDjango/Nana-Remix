@@ -2,7 +2,7 @@ import html
 
 from pyrogram import filters
 
-from nana import app, COMMAND_PREFIXES, edrep
+from nana import app, COMMAND_PREFIXES, edit_or_reply
 from nana.utils.parser import mention_html, mention_markdown
 from nana.tr_engine.strings import tld
 
@@ -84,7 +84,7 @@ async def adminlist(client, message):
     if toolong:
         await message.reply(message.chat.id, teks, reply_to_message_id=replyid)
     else:
-        await edrep(message, text=teks)
+        await edit_or_reply(message, text=teks)
 
 
 @app.on_message(filters.me & filters.command("reportadmins", COMMAND_PREFIXES))
@@ -178,4 +178,4 @@ async def get_list_bots(client, message):
     if replyid:
         await client.send_message(message.chat.id, teks, reply_to_message_id=replyid)
     else:
-        await edrep(message, text=teks)
+        await edit_or_reply(message, text=teks)

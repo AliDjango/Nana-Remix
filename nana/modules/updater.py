@@ -6,7 +6,14 @@ from git import Repo
 from git.exc import InvalidGitRepositoryError, GitCommandError, NoSuchPathError
 from pyrogram import filters
 
-from nana import app, COMMAND_PREFIXES, AdminSettings, OFFICIAL_BRANCH, REPOSITORY, edrep
+from nana import (
+    app,
+    COMMAND_PREFIXES,
+    AdminSettings,
+    OFFICIAL_BRANCH,
+    REPOSITORY,
+    edit_or_reply,
+)
 from nana.__main__ import restart_all, except_hook
 from nana.assistant.updater import update_changelog
 
@@ -52,13 +59,15 @@ async def initial_git(repo):
     os.rename("nana-old/nana/session/", "nana/session/")
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("update", COMMAND_PREFIXES))
+@app.on_message(
+    filters.user(AdminSettings) & filters.command("update", COMMAND_PREFIXES)
+)
 async def updater(client, message):
     initial = False
     try:
         repo = Repo()
     except NoSuchPathError as error:
-        await edrep(
+        await edit_or_reply(
             message,
             text=f"**Update failed!**\n\nError:\n`directory {error} is not found`",
         )
@@ -67,12 +76,12 @@ async def updater(client, message):
         repo = Repo.init()
         initial = True
     except GitCommandError as error:
-        await edrep(message, text=f"**Update failed!**\n\nError:\n`{error}`")
+        await edit_or_reply(message, text=f"**Update failed!**\n\nError:\n`{error}`")
         return
 
     if initial:
         if len(message.text.split()) != 2:
-            await edrep(
+            await edit_or_reply(
                 message,
                 text="Your git workdir is missing!\nBut i can repair and take new latest update for you.\nJust do `update "
                 "now` to repair and take update!",
@@ -83,10 +92,12 @@ async def updater(client, message):
                 await initial_git(repo)
             except Exception as err:
                 exc_type, exc_obj, exc_tb = sys.exc_info()
-                await edrep(message, text=f"**Error:**\n{err}")
+                await edit_or_reply(message, text=f"**Error:**\n{err}")
                 await except_hook(exc_type, exc_obj, exc_tb)
                 return
-            await edrep(message, text="Successfully Updated!\nBot is restarting...")
+            await edit_or_reply(
+                message, text="Successfully Updated!\nBot is restarting..."
+            )
             await update_changelog(
                 "-> **WARNING**: Bot has been created a new git and sync to latest version, your old files is in nana-old"
             )
@@ -95,7 +106,7 @@ async def updater(client, message):
 
     brname = repo.active_branch.name
     if brname not in OFFICIAL_BRANCH:
-        await edrep(
+        await edit_or_reply(
             message,
             text=f"**[UPDATER]:** Looks like you are using your own custom branch ({brname}). in that case, Updater is unable to identify which branch is to be merged. please checkout to any official branch",
         )
@@ -115,17 +126,19 @@ async def updater(client, message):
                 await initial_git(repo)
             except Exception as err:
                 exc_type, exc_obj, exc_tb = sys.exc_info()
-                await edrep(message, text=f"**Error:**\n{err}")
+                await edit_or_reply(message, text=f"**Error:**\n{err}")
                 await except_hook(exc_type, exc_obj, exc_tb)
                 return
-            await edrep(message, text="Successfully Updated!\nBot is restarting...")
+            await edit_or_reply(
+                message, text="Successfully Updated!\nBot is restarting..."
+            )
             await update_changelog(
                 "-> **WARNING**: Bot has been created a new git and sync to latest version, your old files is in nana-old"
             )
             await restart_all()
             return
         exc_type, exc_obj, exc_tb = sys.exc_info()
-        await edrep(
+        await edit_or_reply(
             message,
             text="An error has accured!\nPlease see your Assistant for more information!",
         )
@@ -133,7 +146,9 @@ async def updater(client, message):
         return
 
     if not changelog:
-        await edrep(message, text=f"Nana is up-to-date with branch **{brname}**\n")
+        await edit_or_reply(
+            message, text=f"Nana is up-to-date with branch **{brname}**\n"
+        )
         return
 
     if len(message.text.split()) != 2:
@@ -142,7 +157,7 @@ async def updater(client, message):
             f"\nCHANGELOG:**\n`{changelog}` "
         )
         if len(changelog_str) > 4096:
-            await edrep(
+            await edit_or_reply(
                 message, text="`Changelog is too big, view the file to see it.`"
             )
             with open("nana/cache/output.txt", "w+") as file:
@@ -155,23 +170,27 @@ async def updater(client, message):
             )
             os.remove("nana/cache/output.txt")
         else:
-            await edrep(message, text=changelog_str)
+            await edit_or_reply(message, text=changelog_str)
         return
     elif len(message.text.split()) == 2 and message.text.split()[1] == "now":
-        await edrep(message, text="`New update found, updating...`")
+        await edit_or_reply(message, text="`New update found, updating...`")
         try:
             upstream.pull(brname)
-            await edrep(message, text="Successfully Updated!\nBot is restarting...")
+            await edit_or_reply(
+                message, text="Successfully Updated!\nBot is restarting..."
+            )
         except GitCommandError:
             repo.git.reset("--hard")
             repo.git.clean("-fd", "nana/modules/")
             repo.git.clean("-fd", "nana/assistant/")
             repo.git.clean("-fd", "nana/utils/")
-            await edrep(message, text="Successfully Updated!\nBot is restarting...")
+            await edit_or_reply(
+                message, text="Successfully Updated!\nBot is restarting..."
+            )
         await update_changelog(changelog)
         await restart_all()
     else:
-        await edrep(
+        await edit_or_reply(
             message,
             text="Usage:\n-> `update` to check update\n-> `update now` to update latest commits\nFor more information ",
         )

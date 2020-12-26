@@ -3,7 +3,7 @@ import random
 
 from pyrogram import filters
 
-from nana import app, COMMAND_PREFIXES, AdminSettings, edrep
+from nana import app, COMMAND_PREFIXES, AdminSettings, edit_or_reply
 from nana.utils.Pyroutils import ReplyCheck
 
 
@@ -42,7 +42,9 @@ async def google_search(client, message):
     elif message.reply_to_message and len(cmd) == 1:
         googles = message.reply_to_message.text
     elif len(cmd) == 1:
-        await edrep(message, text="`No text Given hence can not google the void.`")
+        await edit_or_reply(
+            message, text="`No text Given hence can not google the void.`"
+        )
         await asyncio.sleep(2)
         await message.delete()
         return
@@ -66,7 +68,7 @@ async def mock_spongebob(client, message):
     elif message.reply_to_message and len(cmd) == 1:
         mock = message.reply_to_message.text
     elif len(cmd) == 1:
-        await edrep(message, text="`Can't mock the void.`")
+        await edit_or_reply(message, text="`Can't mock the void.`")
         await asyncio.sleep(2)
         await message.delete()
         return
@@ -81,7 +83,9 @@ async def mock_spongebob(client, message):
     )
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("senpai", COMMAND_PREFIXES))
+@app.on_message(
+    filters.user(AdminSettings) & filters.command("senpai", COMMAND_PREFIXES)
+)
 async def senpai_sticker(client, message):
     cmd = message.command
     senpai = ""
@@ -90,7 +94,7 @@ async def senpai_sticker(client, message):
     elif message.reply_to_message and len(cmd) == 1:
         senpai = message.reply_to_message.text
     elif len(cmd) == 1:
-        await edrep(message, text="`No text Given hence the senpai Ran Away.`")
+        await edit_or_reply(message, text="`No text Given hence the senpai Ran Away.`")
         await asyncio.sleep(2)
         await message.delete()
         return
@@ -107,7 +111,9 @@ async def senpai_sticker(client, message):
     )
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("waifu", COMMAND_PREFIXES))
+@app.on_message(
+    filters.user(AdminSettings) & filters.command("waifu", COMMAND_PREFIXES)
+)
 async def waifu_sticker(client, message):
     cmd = message.command
     waifu = ""
@@ -116,7 +122,7 @@ async def waifu_sticker(client, message):
     elif message.reply_to_message and len(cmd) == 1:
         waifu = message.reply_to_message.text
     elif len(cmd) == 1:
-        await edrep(message, text="`No text Given hence the waifu Ran Away.`")
+        await edit_or_reply(message, text="`No text Given hence the waifu Ran Away.`")
         await asyncio.sleep(2)
         await message.delete()
         return

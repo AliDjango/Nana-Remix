@@ -1,7 +1,7 @@
 from gpytranslate import Translator
 from pyrogram import filters
 
-from nana import app, COMMAND_PREFIXES, AdminSettings, edrep
+from nana import app, COMMAND_PREFIXES, AdminSettings, edit_or_reply
 
 trl = Translator()
 
@@ -36,7 +36,9 @@ async def translate(_, message):
         try:
             tekstr = await trl(text, targetlang=target)
         except ValueError as err:
-            await edrep(message, text=f"Error: `{str(err)}`", parse_mode="Markdown")
+            await edit_or_reply(
+                message, text=f"Error: `{str(err)}`", parse_mode="Markdown"
+            )
             return
     else:
         if len(message.text.split()) <= 2:
@@ -47,12 +49,12 @@ async def translate(_, message):
         try:
             tekstr = await trl(text, targetlang=target)
         except ValueError as err:
-            await edrep(
+            await edit_or_reply(
                 message, text="Error: `{}`".format(str(err)), parse_mode="Markdown"
             )
             return
 
-    await edrep(
+    await edit_or_reply(
         message,
         text=f"**Translated:**\n```{tekstr.text}```\n\n**Detected Language:** `{(await trl.detect(text))}`",
         parse_mode="Markdown",

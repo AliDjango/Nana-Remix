@@ -3,7 +3,7 @@ import sre_constants
 
 from pyrogram import filters
 
-from nana import app, edrep, AdminSettings
+from nana import app, edit_or_reply, AdminSettings
 
 __MODULE__ = "Sed"
 __HELP__ = """
@@ -105,11 +105,11 @@ async def sed_msg(_, message):
                 text = re.sub(repl, repl_with, to_fix, count=1).strip()
         except sre_constants.error:
             print("SRE constant error")
-            await edrep(
+            await edit_or_reply(
                 message,
                 text="SRE constant error. You can learn regex in [here](https://regexone.com)",
                 disable_web_page_preview=True,
             )
             return
         if text:
-            await edrep(message, text="```{}```".format(text))
+            await edit_or_reply(message, text="```{}```".format(text))

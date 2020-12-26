@@ -1,7 +1,7 @@
 from currency_converter import CurrencyConverter
 from pyrogram import filters
 
-from nana import app, COMMAND_PREFIXES, AdminSettings, edrep
+from nana import app, COMMAND_PREFIXES, AdminSettings, edit_or_reply
 
 __MODULE__ = "Calculator"
 __HELP__ = """
@@ -37,7 +37,7 @@ def convert_c(celsius):
 @app.on_message(filters.user(AdminSettings) & filters.command("curr", COMMAND_PREFIXES))
 async def evaluation_curr(_, message):
     if len(message.text.split()) <= 3:
-        await edrep(message, text="Usage: `curr 100 USD IDR`")
+        await edit_or_reply(message, text="Usage: `curr 100 USD IDR`")
         return
     value = message.text.split(None, 3)[1]
     curr1 = message.text.split(None, 3)[2].upper()
@@ -45,15 +45,15 @@ async def evaluation_curr(_, message):
     try:
         conv = c.convert(int(value), curr1, curr2)
         text = "{} {} = {} {}".format(curr1, value, curr2, f"{conv:,.2f}")
-        await edrep(message, text=text)
+        await edit_or_reply(message, text=text)
     except ValueError as err:
-        await edrep(message, text=str(err))
+        await edit_or_reply(message, text=str(err))
 
 
 @app.on_message(filters.user(AdminSettings) & filters.command("temp", COMMAND_PREFIXES))
 async def evaluation_temp(_, message):
     if len(message.text.split()) <= 2:
-        await edrep(message, text="Usage: `temp 30 C` or `temp 60 F`")
+        await edit_or_reply(message, text="Usage: `temp 30 C` or `temp 60 F`")
         return
     temp1 = message.text.split(None, 2)[1]
     temp2 = message.text.split(None, 2)[2]
@@ -61,12 +61,12 @@ async def evaluation_temp(_, message):
         if temp2 == "F":
             result = convert_c(temp1)
             text = "`{}°F` = `{}°C`".format(temp1, result)
-            await edrep(message, text=text)
+            await edit_or_reply(message, text=text)
         elif temp2 == "C":
             result = convert_f(temp1)
             text = "`{}°C` = `{}°F`".format(temp1, result)
-            await edrep(message, text=text)
+            await edit_or_reply(message, text=text)
         else:
-            await edrep(message, text="Unknown type {}".format(temp2))
+            await edit_or_reply(message, text="Unknown type {}".format(temp2))
     except ValueError as err:
-        await edrep(message, text=str(err))
+        await edit_or_reply(message, text=str(err))

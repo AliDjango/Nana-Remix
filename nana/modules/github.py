@@ -10,7 +10,7 @@ from random import randint
 
 from pyrogram import filters
 
-from nana import app, COMMAND_PREFIXES, AdminSettings, edrep
+from nana import app, COMMAND_PREFIXES, AdminSettings, edit_or_reply
 from nana.utils.Pyroutils import ReplyCheck
 from nana.utils.aiohttp_helper import AioHttp
 
@@ -28,14 +28,14 @@ Finding information about a github user.
 @app.on_message(filters.user(AdminSettings) & filters.command("git", COMMAND_PREFIXES))
 async def github(client, message):
     if len(message.text.split()) == 1:
-        await edrep(message, text="Usage: `git (username)`")
+        await edit_or_reply(message, text="Usage: `git (username)`")
         return
     username = message.text.split(None, 1)[1]
     URL = f"https://api.github.com/users/{username}"
     async with aiohttp.ClientSession() as session:
         async with session.get(URL) as request:
             if request.status == 404:
-                return await edrep(message, text="`" + username + " not found`")
+                return await edit_or_reply(message, text="`" + username + " not found`")
 
             result = await request.json()
 
@@ -62,7 +62,7 @@ async def github(client, message):
             drawing = svg2rlg(f"{file_name}.svg")
             renderPM.drawToFile(drawing, f"{file_name}.png")
         except UnboundLocalError:
-            await edrep(message, text="Username does not exist!")
+            await edit_or_reply(message, text="Username does not exist!")
             await sleep(2)
             await message.delete()
             return

@@ -4,7 +4,15 @@ from pyrogram import filters
 
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-from nana import app, setbot, Owner, OwnerName, COMMAND_PREFIXES, DB_AVAILABLE, edrep
+from nana import (
+    app,
+    setbot,
+    Owner,
+    OwnerName,
+    COMMAND_PREFIXES,
+    DB_AVAILABLE,
+    edit_or_reply,
+)
 from nana.utils.msg_types import Types, get_message_type
 from nana.utils.parser import mention_markdown, escape_markdown
 
@@ -78,12 +86,12 @@ async def afk_mentioned(_, message):
             return
         AFK_RESTIRECT[cid] = int(time.time()) + DELAY_TIME
         if get["reason"]:
-            await edrep(
+            await edit_or_reply(
                 message,
                 text=f"Sorry, {mention_markdown(Owner, OwnerName)} is AFK!\nBecause of {get['reason']}",
             )
         else:
-            await edrep(
+            await edit_or_reply(
                 message, text=f"Sorry, {mention_markdown(Owner, OwnerName)} is AFK!"
             )
 

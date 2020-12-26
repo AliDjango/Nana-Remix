@@ -4,7 +4,7 @@ from asyncio import sleep, gather
 from pyrogram.raw import functions
 from pyrogram import filters
 
-from nana import app, COMMAND_PREFIXES, DB_AVAILABLE, AdminSettings, edrep
+from nana import app, COMMAND_PREFIXES, DB_AVAILABLE, AdminSettings, edit_or_reply
 
 if DB_AVAILABLE:
     from nana.modules.database.cloner_db import backup_indentity, restore_identity
@@ -54,7 +54,9 @@ Creates message link to a message
 profile_photo = "nana/downloads/pfp.jpg"
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("setpfp", COMMAND_PREFIXES))
+@app.on_message(
+    filters.user(AdminSettings) & filters.command("setpfp", COMMAND_PREFIXES)
+)
 async def set_pfp(client, message):
     replied = message.reply_to_message
     if (
@@ -69,11 +71,11 @@ async def set_pfp(client, message):
         await client.set_profile_photo(photo=profile_photo)
         if os.path.exists(profile_photo):
             os.remove(profile_photo)
-        await edrep(
+        await edit_or_reply(
             message, text="<code>Profile picture changed.</code>", parse_mode="html"
         )
     else:
-        await edrep(message, text="```Reply to any photo to set as pfp```")
+        await edit_or_reply(message, text="```Reply to any photo to set as pfp```")
         await sleep(3)
         await message.delete()
 
@@ -86,7 +88,7 @@ async def view_pfp(client, message):
     else:
         user = await client.get_me()
     if not user.photo:
-        await edrep(message, text="profile photo not found!")
+        await edit_or_reply(message, text="profile photo not found!")
         return
     await client.download_media(user.photo.big_file_id, file_name=profile_photo)
     await client.send_photo(message.chat.id, profile_photo)
@@ -95,14 +97,16 @@ async def view_pfp(client, message):
         os.remove(profile_photo)
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("clone", COMMAND_PREFIXES))
+@app.on_message(
+    filters.user(AdminSettings) & filters.command("clone", COMMAND_PREFIXES)
+)
 async def clone(client, message):
     if message.reply_to_message:
         target = message.reply_to_message.from_user.id
     elif len(message.text.split()) >= 2 and message.text.split()[1].isdigit():
-        await edrep(message, text="Select target user to clone their identity!")
+        await edit_or_reply(message, text="Select target user to clone their identity!")
     else:
-        await edrep(message, text="Select target user to clone their identity!")
+        await edit_or_reply(message, text="Select target user to clone their identity!")
     if "origin" in message.text:
         my_self = await app.get_me()
         my_self = await client.send(
@@ -135,12 +139,14 @@ async def clone(client, message):
         )
     )
     os.remove(dl)
-    await edrep(message, text="`New identity has changed!`")
+    await edit_or_reply(message, text="`New identity has changed!`")
     await sleep(5)
     await message.delete()
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("revert", COMMAND_PREFIXES))
+@app.on_message(
+    filters.user(AdminSettings) & filters.command("revert", COMMAND_PREFIXES)
+)
 async def revert(client, message):
     first_name, last_name, bio = restore_identity()
     await client.send(
@@ -153,9 +159,9 @@ async def revert(client, message):
     photos = await client.get_profile_photos("me")
     await gather(
         client.delete_profile_photos(photos[0].file_id),
-        edrep(message, text="`Identity Reverted`"),
+        edit_or_reply(message, text="`Identity Reverted`"),
         sleep(5),
-        message.delete()
+        message.delete(),
     )
 
 
@@ -168,25 +174,29 @@ async def join_chat(client, message):
     elif message.reply_to_message and len(cmd) == 1:
         text = message.reply_to_message.text
     elif len(cmd) == 1:
-        await edrep(message, text="`cant join the void.`")
+        await edit_or_reply(message, text="`cant join the void.`")
         await sleep(2)
         await message.delete()
         return
     await gather(
         client.join_chat(text.replace("@", "")),
-        edrep(message, text=f"joined {text} successfully!"),
+        edit_or_reply(message, text=f"joined {text} successfully!"),
         sleep(2),
-        message.delete()
+        message.delete(),
     )
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("leave", COMMAND_PREFIXES))
+@app.on_message(
+    filters.user(AdminSettings) & filters.command("leave", COMMAND_PREFIXES)
+)
 async def leave_chat(client, message):
-    await edrep(message, text="__adios__")
+    await edit_or_reply(message, text="__adios__")
     await client.leave_chat(message.chat.id)
 
 
-@app.on_message(filters.command("unread", COMMAND_PREFIXES) & filters.user(AdminSettings))
+@app.on_message(
+    filters.command("unread", COMMAND_PREFIXES) & filters.user(AdminSettings)
+)
 async def mark_chat_unread(client, message):
     await gather(
         message.delete(),

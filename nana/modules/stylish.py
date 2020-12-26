@@ -3,7 +3,7 @@ from html import escape
 
 from pyrogram import filters
 
-from nana import app, COMMAND_PREFIXES, AdminSettings, edrep
+from nana import app, COMMAND_PREFIXES, AdminSettings, edit_or_reply
 
 __MODULE__ = "Stylish Text"
 __HELP__ = """
@@ -118,9 +118,7 @@ def text_style_generator(text, text_type):
     teks = list(text)
     for i, _ in enumerate(teks):
         teks[i] = text_type + teks[i]
-    pesan = ""
-    for tek in teks:
-        pesan += tek
+    pesan = "".join(teks)
     return pesan + text_type
 
 
@@ -240,7 +238,9 @@ def stylish_formatting(text):
     return text
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("stylish", COMMAND_PREFIXES))
+@app.on_message(
+    filters.user(AdminSettings) & filters.command("stylish", COMMAND_PREFIXES)
+)
 async def stylish_generator(_, message):
     if (
         message.text
@@ -248,7 +248,7 @@ async def stylish_generator(_, message):
         or message.caption
         and len(message.caption.split()) == 1
     ):
-        await edrep(message, text="Usage: `stylish your text goes here`")
+        await edit_or_reply(message, text="Usage: `stylish your text goes here`")
         return
 
     if message.caption:
@@ -261,7 +261,7 @@ async def stylish_generator(_, message):
     if message.caption:
         await message.edit_caption(text)
     else:
-        await edrep(message, text=text)
+        await edit_or_reply(message, text=text)
 
 
 # For inline stuff

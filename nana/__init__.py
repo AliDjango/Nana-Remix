@@ -22,16 +22,13 @@ StartTime = time.time()
 
 # if version < 3.6, stop bot.
 if sys.version_info[0] < 3 or sys.version_info[1] < 6:
-    logging.error(
-        "You MUST have a python version of at least 3.6! Multiple features depend on this. Bot quitting."
-    )
+    logging.error("Python version Lower than 3.6! Abort!")
     sys.exit()
 
-USERBOT_VERSION = "3.0"
-ASSISTANT_VERSION = "3.0"
+USERBOT_VERSION = "3.1"
+ASSISTANT_VERSION = "3.1"
 
 OFFICIAL_BRANCH = ["master", "dev", "translations"]
-REPOSITORY = "https://github.com/pokurt/Nana-Remix.git"
 RANDOM_STICKERS = [
     "CAADAgAD6EoAAuCjggf4LTFlHEcvNAI",
     "CAADAgADf1AAAuCjggfqE-GQnopqyAI",
@@ -52,11 +49,13 @@ API_HASH = get_var("api_hash", None)
 
 # Session
 USERBOT_SESSION = get_var("USERBOT_SESSION", None)
+ASSISTANT_BOT_TOKEN = get_var("ASSISTANT_BOT_TOKEN", None)
 
 # From config
 COMMAND_PREFIXES = get_var("Command", "! . - ^").split()
 NANA_WORKER = int(get_var("NANA_WORKER", 8))
 ASSISTANT_WORKER = int(get_var("ASSISTANT_WORKER", 2))
+
 # APIs
 THUMBNAIL_API = get_var("thumbnail_API", None)
 SCREENSHOTLAYER_API = get_var("screenshotlayer_API", None)
@@ -66,21 +65,26 @@ REMOVE_BG_API = get_var("remove_bg_api", None)
 SPAMWATCH_API = get_var("sw_api", None)
 IBM_WATSON_CRED_URL = get_var("IBM_WATSON_CRED_URL", None)
 IBM_WATSON_CRED_PASSWORD = get_var("IBM_WATSON_CRED_PASSWORD", None)
+
 # LOADER
 USERBOT_LOAD = get_var("USERBOT_LOAD", "").split()
 USERBOT_NOLOAD = get_var("USERBOT_NOLOAD", "").split()
 ASSISTANT_LOAD = get_var("ASSISTANT_LOAD", "").split()
 ASSISTANT_NOLOAD = get_var("ASSISTANT_NOLOAD", "").split()
 
+# Git Repository for Pulling Updates
+REPOSITORY = get_var("REPOSITORY", False)
+
+# Postgresql Database
 DB_URI = get_var("DB_URI", "postgres://username:password@localhost:5432/database")
-ASSISTANT_BOT_TOKEN = get_var("ASSISTANT_BOT_TOKEN", None)
+
 AdminSettings = [int(x) for x in get_var("AdminSettings", "").split()]
 REMINDER_UPDATE = bool(get_var("REMINDER_UPDATE", True))
 NANA_IMG = get_var("NANA_IMG", False)
 PM_PERMIT = bool(get_var("PM_PERMIT", False))
 
 OwnerName = ""
-app_version = "💝 Nana v{}".format(USERBOT_VERSION)
+app_version = "💝 Nana-Remix (v{})".format(USERBOT_VERSION)
 BotUsername = ""
 BotID = 0
 # Required for some features
@@ -184,7 +188,7 @@ app = Client(
 )
 
 
-async def edrep(msg: Message, **kwargs):
+async def edit_or_reply(msg: Message, **kwargs):
     func = msg.edit_text if msg.from_user.is_self else msg.reply
     spec = getfullargspec(func.__wrapped__).args
     await func(**{k: v for k, v in kwargs.items() if k in spec})

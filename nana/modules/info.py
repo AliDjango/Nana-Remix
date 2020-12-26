@@ -7,7 +7,7 @@ from pyrogram.types import User
 from pyrogram.raw import functions
 from pyrogram.errors import PeerIdInvalid
 
-from nana import app, COMMAND_PREFIXES, SPAMWATCH_API, AdminSettings, edrep
+from nana import app, COMMAND_PREFIXES, SPAMWATCH_API, AdminSettings, edit_or_reply
 
 __MODULE__ = "Whois"
 __HELP__ = """
@@ -70,7 +70,7 @@ async def whois(client, message):
     try:
         user = await client.get_users(get_user)
     except PeerIdInvalid:
-        await edrep(message, text="I don't know that User.")
+        await edit_or_reply(message, text="I don't know that User.")
         sleep(2)
         await message.delete()
         return
@@ -83,7 +83,7 @@ async def whois(client, message):
             sw = spamwatch.Client(SPAMWATCH_API)
             status = sw.get_ban(user.id)
             if status == False:
-                await edrep(
+                await edit_or_reply(
                     message,
                     text=f"""
 **About {user.mention}**:
@@ -97,7 +97,7 @@ async def whois(client, message):
                     disable_web_page_preview=True,
                 )
             else:
-                await edrep(
+                await edit_or_reply(
                     message,
                     text=f"""
 **About {user.mention}**:
@@ -114,7 +114,7 @@ async def whois(client, message):
                 )
             return
         else:
-            await edrep(
+            await edit_or_reply(
                 message,
                 text=f"""
 **About {user.mention}**:

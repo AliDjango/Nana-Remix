@@ -3,7 +3,14 @@ import shutil
 
 from pyrogram import filters
 
-from nana import app, COMMAND_PREFIXES, THUMBNAIL_API, SCREENSHOTLAYER_API, AdminSettings, edrep
+from nana import (
+    app,
+    COMMAND_PREFIXES,
+    THUMBNAIL_API,
+    SCREENSHOTLAYER_API,
+    AdminSettings,
+    edit_or_reply,
+)
 
 __MODULE__ = "SS Website"
 __HELP__ = """
@@ -21,13 +28,15 @@ Take screenshot of that website, if `full` args given, take full of website and 
 """
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("print", COMMAND_PREFIXES))
+@app.on_message(
+    filters.user(AdminSettings) & filters.command("print", COMMAND_PREFIXES)
+)
 async def print_web(client, message):
     if len(message.text.split()) == 1:
-        await edrep(message, text="Usage: `print web.url`")
+        await edit_or_reply(message, text="Usage: `print web.url`")
         return
     if not THUMBNAIL_API:
-        await edrep(message, text="You need to fill thumbnail_API to use this!")
+        await edit_or_reply(message, text="You need to fill thumbnail_API to use this!")
         return
     args = message.text.split(None, 1)
     teks = args[1]
@@ -42,10 +51,12 @@ async def print_web(client, message):
 @app.on_message(filters.user(AdminSettings) & filters.command("ss", COMMAND_PREFIXES))
 async def ss_web(client, message):
     if len(message.text.split()) == 1:
-        await edrep(message, text="Usage: `print web.url`")
+        await edit_or_reply(message, text="Usage: `print web.url`")
         return
     if not SCREENSHOTLAYER_API:
-        await edrep(message, text="You need to fill screenshotlayer_API to use this!")
+        await edit_or_reply(
+            message, text="You need to fill screenshotlayer_API to use this!"
+        )
         return
     args = message.text.split(None, 1)
     teks = args[1]

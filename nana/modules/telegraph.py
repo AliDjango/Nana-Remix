@@ -2,7 +2,7 @@ import os
 from telegraph import upload_file
 
 from pyrogram import filters
-from nana import COMMAND_PREFIXES, app, AdminSettings, edrep
+from nana import COMMAND_PREFIXES, app, AdminSettings, edit_or_reply
 
 __MODULE__ = "Telegra.ph"
 __HELP__ = """
@@ -16,11 +16,13 @@ Reply to Media as args to upload it to telegraph.
 """
 
 
-@app.on_message(filters.user(AdminSettings) & filters.command("telegraph", COMMAND_PREFIXES))
+@app.on_message(
+    filters.user(AdminSettings) & filters.command("telegraph", COMMAND_PREFIXES)
+)
 async def telegraph(client, message):
     replied = message.reply_to_message
     if not replied:
-        await edrep(message, text="reply to a supported media file")
+        await edit_or_reply(message, text="reply to a supported media file")
         return
     if not (
         (replied.photo and replied.photo.file_size <= 5242880)
@@ -38,7 +40,7 @@ async def telegraph(client, message):
             and replied.document.file_size <= 5242880
         )
     ):
-        await edrep(message, text="not supported!")
+        await edit_or_reply(message, text="not supported!")
         return
     download_location = await client.download_media(
         message=message.reply_to_message, file_name="root/nana/"
@@ -46,9 +48,9 @@ async def telegraph(client, message):
     try:
         response = upload_file(download_location)
     except Exception as document:
-        await edrep(message, text=document)
+        await edit_or_reply(message, text=document)
     else:
-        await edrep(
+        await edit_or_reply(
             message,
             text=f"**Document passed to: [Telegra.ph](https://telegra.ph{response[0]})**",
         )
